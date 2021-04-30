@@ -21,10 +21,9 @@ public class FallowCam : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        Vector3 cameraPosition = targetTr.position + (Vector3.forward * -1 * distance) + (Vector3.up * height);
+        Vector3 cameraPosition = targetTr.position + (targetTr.forward * -1 * distance) + (targetTr.up * height);
 
         cameraTr.position = Vector3.Lerp(cameraTr.position, cameraPosition, Time.deltaTime * damping);
-
         cameraTr.LookAt(targetTr.position);
     }
 }
