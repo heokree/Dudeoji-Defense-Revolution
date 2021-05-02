@@ -14,7 +14,8 @@ public class PlayerCtrl : MonoBehaviour
 
     private float moveH;
     private float moveV;
-    private float rotate;
+    private float rotateH;
+    private float rotateV;
 #endregion
 
 #region raycast
@@ -24,6 +25,7 @@ public class PlayerCtrl : MonoBehaviour
 #endregion
 
     private Transform playerTr;
+    // private Transform playerPosTr;
     public Transform hammerTr;
     public Transform hammerTurnSupport;
 
@@ -34,21 +36,21 @@ public class PlayerCtrl : MonoBehaviour
     void Start()
     {
         playerTr = GetComponent<Transform>();
+        // playerPosTr = GetComponentInParent<Transform>();
         camera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+        MovePlayer();
+
         ray = camera.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 1000.0f, Color.green);
 
-        MovePlayer();
-
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("click");
-            StartCoroutine(Smash());
+            StartCoroutine(ThrowHM());
         }
     }
 #endregion
@@ -57,33 +59,28 @@ public class PlayerCtrl : MonoBehaviour
     {
         moveH = Input.GetAxis("Horizontal");
         moveV = Input.GetAxis("Vertical");
-        rotate = Input.GetAxis("Mouse X");
+        rotateH = Input.GetAxis("Mouse X");
+        // rotateV = Input.GetAxis("Mouse Y");
 
         Vector3 moveDir = (Vector3.forward * moveV) + (Vector3.right * moveH);
         playerTr.Translate(moveDir.normalized * Time.deltaTime * moveSpeed);
-        playerTr.Rotate(Vector3.up * Time.deltaTime * rotate * rotateSpeed);
+        playerTr.Rotate((Vector3.up * rotateH) * Time.deltaTime * rotateSpeed);
+        // playerTr.Rotate(((Vector3.up * rotateH) + (Vector3.right * -1 * rotateV)) * Time.deltaTime * rotateSpeed);
     }
 
-    IEnumerator Smash()
+    IEnumerator ThrowHM()
     {
-        Vector3 originalPos = hammerTr.position;
-        Debug.Log($"Step1: originalPos: {originalPos} hammerTr.position : {hammerTr.position}");
+        Vector3 originalPos = playerTr.position - hammerTr.position;
 
         if(Physics.Raycast(ray, out hit))
         {
-            Debug.Log("hit");
-
             hammerTr.RotateAround(hammerTurnSupport.position, hammerTr.right, 90.0f);
             hammerTr.position = Vector3.Lerp(hammerTr.position, hit.point, 10.0f);
             
-            Debug.Log($"Step2: originalPos: {originalPos} hammerTr.position : {hammerTr.position}");
-
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(0.1f);
 
             hammerTr.RotateAround(hammerTurnSupport.position, hammerTr.right, -90.0f);
-            hammerTr.position = Vector3.Lerp(originalPos, hammerTr.position, 10.0f);
-            
-            Debug.Log($"Step3: originalPos: {originalPos} hammerTr.position : {hammerTr.position}");
+            hammerTr.position = Vector3.Lerp(hammerTr.position, (playerTr.position - originalPos), 10.0f);
         }
 
     }
