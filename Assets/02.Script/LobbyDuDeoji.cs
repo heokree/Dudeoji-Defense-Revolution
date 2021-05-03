@@ -23,17 +23,14 @@ public class LobbyDuDeoji : MonoBehaviour
             yield return new WaitForSeconds(4.0f);
             animator.SetBool(hashUnderground, true);
             animator.SetBool(hashHeadOnly, false);
-            Debug.Log("underground");
 
             yield return new WaitForSeconds(1.0f);
             animator.SetBool(hashUnderground, false);
             animator.SetBool(hashHeadOnly, true);
-            Debug.Log("headonly");
 
             yield return new WaitForSeconds(4.0f);
             animator.SetBool(hashUnderground, false);
             animator.SetBool(hashHeadOnly, false);
-            Debug.Log("idle");
         }
     }
 }

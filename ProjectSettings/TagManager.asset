@@ -9,6 +9,8 @@ TagManager:
   - SLASH
   - HAMMER
   - HOLE
+  - LOBBY
+  - START
   layers:
   - Default
   - TransparentFX

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FallowCam : MonoBehaviour
 {
-    public Transform targetTr;
+    public Transform TargetTr {get; set;}
 
     public float distance   = 5.0f;
     public float height     = 5.0f;
@@ -21,9 +21,9 @@ public class FallowCam : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        Vector3 cameraPosition = targetTr.position + (targetTr.forward * -1 * distance) + (targetTr.up * height);
+        Vector3 cameraPosition = TargetTr.position + (TargetTr.forward * -1 * distance) + (TargetTr.up * height);
 
         cameraTr.position = Vector3.Lerp(cameraTr.position, cameraPosition, Time.deltaTime * damping);
-        cameraTr.LookAt(targetTr.position);
+        cameraTr.LookAt(TargetTr.position);
     }
 }

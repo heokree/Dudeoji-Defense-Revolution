@@ -139,14 +139,17 @@ public class DuDeojiCtrl : MonoBehaviour
                 case STATE.RUN:
                     navMeshAgent.isStopped = false;
                     animator.SetTrigger(hashRun);
+                    GetComponent<CapsuleCollider>().enabled = true;
                     break;
 
                 case STATE.ATTACK:
                     if(!lookAtBox)
                     {
+                        lookAtBox = true;
                         duDeojiTr.LookAt(boxTr.position);
                     }
                     animator.SetTrigger(hashAttack);
+                    GetComponent<CapsuleCollider>().enabled = true;
                     yield return new WaitForSeconds(1.0f);
                     break;
 
@@ -156,7 +159,8 @@ public class DuDeojiCtrl : MonoBehaviour
                     navMeshAgent.isStopped = true;
                     isDie = true;
 
-                    Invoke("ReturnPool", 1.0f);
+                    Destroy(this.gameObject, 1.0f);
+                    // Invoke("ReturnPool", 1.0f);
                     break;
             }
             yield return new WaitForSeconds(0.2f);
