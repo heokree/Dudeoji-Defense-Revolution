@@ -148,7 +148,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         
         try
         {
-            if (roomNameText.text != null)
+            if (!string.IsNullOrEmpty(roomNameText.text))
             {
                 PhotonNetwork.CreateRoom(roomNameText.text, roomOptions);
             }

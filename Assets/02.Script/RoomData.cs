@@ -26,6 +26,6 @@ public class RoomData : MonoBehaviour
 
     void Awake()
     {
-        roomInfoText = GetComponent<TMP_Text>();
+        roomInfoText = GetComponentInChildren<TMP_Text>();
     }
 }

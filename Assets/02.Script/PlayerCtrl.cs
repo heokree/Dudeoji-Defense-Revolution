@@ -61,7 +61,7 @@ public class PlayerCtrl : MonoBehaviour, IPunObservable
 
             ray = camera.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 1000.0f, Color.green);
-
+            
             if(Input.GetMouseButtonDown(0))
             {
                 photonView.RPC("ThrowHM_RPC", RpcTarget.AllViaServer, photonView.Owner.NickName);

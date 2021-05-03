@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class DuDeojiCtrl : MonoBehaviour
 {
@@ -159,7 +161,11 @@ public class DuDeojiCtrl : MonoBehaviour
                     navMeshAgent.isStopped = true;
                     isDie = true;
 
-                    Destroy(this.gameObject, 1.0f);
+                    if(this.gameObject.GetComponent<PhotonView>().IsMine)
+                    {
+                        yield return new WaitForSeconds(1.0f);
+                        PhotonNetwork.Destroy(this.gameObject.GetComponent<PhotonView>());
+                    }
                     // Invoke("ReturnPool", 1.0f);
                     break;
             }
@@ -167,6 +173,7 @@ public class DuDeojiCtrl : MonoBehaviour
         }
 
     }
+
 
 
     void OnHit()
